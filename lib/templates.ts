@@ -1,152 +1,142 @@
-'use strict';
+import { Base, IClient } from "./client.ts";
 
 const api = 'templates';
 
-const _ = require('lodash');
+import { default as cloneDeep } from "https://unpkg.com/lodash-es@4.17.15/cloneDeep.js";
 
-module.exports = function(client) {
-  return {
-    /**
-     * List an overview of all templates.
-     *
-     * @param {RequestCb} [callback]
-     * @returns {Promise}
-     */
-    list: function(callback) {
-      const options = {
-        uri: api
-      };
-      return client.get(options, callback);
-    },
-    /**
-     * Get details about a specified template by its id.
-     *
-     * @param {string} id
-     * @param {Object} options
-     * @param {RequestCb} [callback]
-     * @returns {Promise}
-     */
-    get: function(id, options, callback) {
-      options = options || {};
+export class Templates extends Base {
+  /**
+   * List an overview of all templates.
+   *
+   * @returns {Promise}
+   */
+  async list() {
+    const options = {
+      uri: api
+    };
+    return await this.client.get(options);
+  }
+  /**
+   * Get details about a specified template by its id.
+   *
+   * @param {string} id
+   * @param {Object} options
+   * @returns {Promise}
+   */
+  async get(id: string, options: any) {
+    options = options || {};
 
-      if (typeof options === 'function') {
-        callback = options;
-        options = {};
-      }
-
-      if (!id) {
-        return client.reject(new Error('template id is required'), callback);
-      }
-
-      const reqOpts = {
-        uri: `${api}/${id}`
-        , qs: options
-      };
-
-      return client.get(reqOpts, callback);
-    },
-    /**
-     * Create a new template.
-     *
-     * @param {Object} template
-     * @param {RequestCb} [callback]
-     * @returns {Promise}
-     */
-    create: function(template, callback) {
-      if (!template || typeof template !== 'object') {
-        return client.reject(new Error('template object is required'), callback);
-      }
-
-      const reqOpts = {
-        uri: api
-        , json: template
-      };
-
-      return client.post(reqOpts, callback);
-    },
-    /**
-     * Update an existing template.
-     *
-     * @param {String} id
-     * @param {Object} template
-     * @param {Object} options
-     * @param {RequestCb} callback
-     * @returns {Promise}
-     */
-    update: function(id, template, options, callback) {
-      // Handle optional options argument
-      if (typeof options === 'function') {
-        callback = options;
-        options = {};
-      }
-
-      if (!id) {
-        return client.reject(new Error('template id is required'), callback);
-      }
-
-      if (!template || typeof template !== 'object') {
-        return client.reject(new Error('template object is required'), callback);
-      }
-
-      const reqOpts = {
-        uri: `${api}/${id}`
-        , json: template
-        , qs: options
-      };
-
-      return client.put(reqOpts, callback);
-    },
-    /**
-     * Delete an existing template.
-     *
-     * @param {String} id
-     * @param {RequestCb} [callback]
-     * @returns {Promise}
-     */
-    delete: function(id, callback) {
-      if (!id || typeof id !== 'string') {
-        return client.reject(new Error('template id is required'), callback);
-      }
-
-      const options = {
-        uri: `${api}/${id}`
-      };
-      return client.delete(options, callback);
-    },
-    /**
-     * Preview the most recent version of an existing template by id.
-     *
-     * @param {String} id
-     * @param {Object} options
-     * @param {RequestCb} [callback]
-     * @returns {Promise}
-     */
-    preview: function(id, options, callback) {
-      options = options || {};
-
-      // Handle optional options argument
-      if (typeof options === 'function') {
-        callback = options;
-        options = {};
-      }
-
-      if (!id) {
-        return client.reject(new Error('template id is required'), callback);
-      }
-
-      const reqOpts = {
-        uri: `${api}/${id}/preview`
-        , json: _.cloneDeep(options)
-        , qs: {}
-      };
-
-      // Add draft to query params
-      if (reqOpts.json.hasOwnProperty('draft')) {
-        reqOpts.qs.draft = reqOpts.json.draft;
-        delete reqOpts.json.draft;
-      }
-
-      return client.post(reqOpts, callback);
+    if (typeof options === 'function') {
+      return this.client.reject(new Error('options cannot be a callback'));
     }
-  };
+
+    if (!id) {
+      return this.client.reject(new Error('template id is required'));
+    }
+
+    const reqOpts = {
+      uri: `${api}/${id}`
+      , qs: options
+    };
+
+    return await this.client.get(reqOpts);
+  }
+  /**
+   * Create a new template.
+   *
+   * @param {Object} template
+   * @returns {Promise}
+   */
+  async create(template: any) {
+    if (!template || typeof template !== 'object') {
+      return this.client.reject(new Error('template object is required'));
+    }
+
+    const reqOpts = {
+      uri: api
+      , json: template
+    };
+
+    return await this.client.post(reqOpts);
+  }
+  /**
+   * Update an existing template.
+   *
+   * @param {String} id
+   * @param {Object} template
+   * @param {Object} options
+   * @returns {Promise}
+   */
+  async update(id: string, template: any, options: any) {
+    // Handle optional options argument
+    if (typeof options === 'function') {
+      return this.client.reject(new Error('options cannot be a callback'));
+    }
+
+    if (!id) {
+      return this.client.reject(new Error('template id is required'));
+    }
+
+    if (!template || typeof template !== 'object') {
+      return this.client.reject(new Error('template object is required'));
+    }
+
+    const reqOpts = {
+      uri: `${api}/${id}`
+      , json: template
+      , qs: options
+    };
+
+    return await this.client.put(reqOpts);
+  }
+  /**
+   * Delete an existing template.
+   *
+   * @param {String} id
+   * @returns {Promise}
+   */
+  async delete(id: string) {
+    if (!id || typeof id !== 'string') {
+      return this.client.reject(new Error('template id is required'));
+    }
+
+    const options = {
+      uri: `${api}/${id}`
+    };
+    return await this.client.delete(options);
+  }
+  /**
+   * Preview the most recent version of an existing template by id.
+   *
+   * @param {String} id
+   * @param {Object} options
+   * @returns {Promise}
+   */
+  async preview(id: string, options: any) {
+    options = options || {};
+
+    // Handle optional options argument
+    if (typeof options === 'function') {
+      return this.client.reject(new Error('options cannot be a callback'));
+    }
+
+    if (!id) {
+      return this.client.reject(new Error('template id is required'));
+    }
+
+    const reqOpts = {
+      uri: `${api}/${id}/preview`
+      , json: cloneDeep(options)
+      , qs: {}
+    };
+    const qs: any = reqOpts.qs // force any type
+
+    // Add draft to query params
+    if (reqOpts.json.hasOwnProperty('draft')) {
+      qs.draft = reqOpts.json.draft;
+      delete reqOpts.json.draft;
+    }
+
+    return await this.client.post(reqOpts);
+  }
 };

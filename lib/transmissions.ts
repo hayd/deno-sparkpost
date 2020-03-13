@@ -1,6 +1,7 @@
-'use strict';
+import { Base, IClient } from "./client.ts";
 
-const _ = require('lodash');
+import * as _ from "https://unpkg.com/lodash-es@4.17.15/lodash.js";
+
 const api = 'transmissions';
 
 /*
@@ -8,81 +9,73 @@ const api = 'transmissions';
  * another for getting a list of transmissions that have been sent, and another for getting
  * info about a specific transmission
  */
-module.exports = function(client) {
-  return {
-    /**
-     * List an overview of all transmissions in the account
-     *
-     * @param {Object} options
-     * @param {RequestCb} [callback]
-     * @returns {Promise}
-     */
-    list: function(options, callback) {
-      // Handle optional options argument
-      if (typeof options === 'function') {
-        callback = options;
-        options = {};
-      }
-
-      const reqOpts = {
-        uri: api,
-        qs: options
-      };
-
-      return client.get(reqOpts, callback);
-    },
-    /**
-     * Retrieve the details about a transmission by its id
-     *
-     * @param {String} id
-     * @param {RequestCb} [callback]
-     * @returns {Promise}
-     */
-    get: function(id, callback) {
-      if (typeof id !== 'string') {
-        return client.reject(new Error('id is required'), callback);
-      }
-
-      const options = {
-        uri: `${api}/${id}`
-      };
-
-      return client.get(options, callback);
-    },
-    /**
-     * Sends a message by creating a new transmission
-     *
-     * @param {Object} transmission
-     * @param {Object} options
-     * @param {RequestCb} [callback]
-     * @returns {Promise}
-     */
-    send: function(transmission, options, callback) {
-      // Handle optional options argument
-      if (typeof options === 'function') {
-        callback = options;
-        options = {};
-      }
-
-      if (!transmission || typeof transmission !== 'object') {
-        return client.reject(new Error('transmission object is required'), callback);
-      }
-
-      transmission = formatPayload(transmission);
-
-      const reqOpts = {
-        uri: api,
-        json: transmission,
-        qs: options
-      };
-
-      return client.post(reqOpts, callback);
+export class Transmissions extends Base {
+  /**
+   * List an overview of all transmissions in the account
+   *
+   * @param {Object} options
+   * @returns {Promise}
+   */
+  async list(options: any) {
+    // Handle optional options argument
+    if (typeof options === 'function') {
+      return this.client.reject(new Error('options cannot be a callback'));
     }
-  };
 
+    const reqOpts = {
+      uri: api,
+      qs: options
+    };
+
+    return await this.client.get(reqOpts);
+  }
+  /**
+   * Retrieve the details about a transmission by its id
+   *
+   * @param {String} id
+   * @returns {Promise}
+   */
+  async get(id: string) {
+    if (typeof id !== 'string') {
+      return this.client.reject(new Error('id is required'));
+    }
+
+    const options = {
+      uri: `${api}/${id}`
+    };
+
+    return await this.client.get(options);
+  }
+  /**
+   * Sends a message by creating a new transmission
+   *
+   * @param {Object} transmission
+   * @param {Object} options
+   * @returns {Promise}
+   */
+  async send(transmission: any, options: any) {
+    // Handle optional options argument
+    if (typeof options === 'function') {
+      return this.client.reject(new Error('options cannot be a callback'));
+    }
+
+    if (!transmission || typeof transmission !== 'object') {
+      return this.client.reject(new Error('transmission object is required'));
+    }
+
+    transmission = formatPayload(transmission);
+
+    const reqOpts = {
+      uri: api,
+      json: transmission,
+      qs: options
+    };
+
+    return await this.client.post(reqOpts);
+  }
 };
 
-function formatPayload(originalTransmission) {
+function formatPayload(originalTransmission: any) {
   const transmission = _.cloneDeep(originalTransmission);
 
   // don't format the payload if we are not given an array of recipients
@@ -91,7 +84,7 @@ function formatPayload(originalTransmission) {
   }
 
   // format all the original recipients to be in the object format
-  transmission.recipients = _.map(transmission.recipients, (recipient) => {
+  transmission.recipients = _.map(transmission.recipients, (recipient: any) => {
     recipient.address = addressToObject(recipient.address);
 
     return recipient;
@@ -113,12 +106,13 @@ function formatPayload(originalTransmission) {
   return transmission;
 }
 
-function addListToRecipients(transmission, listName, headerTo) {
+// FIXME these shouldn't all be any
+function addListToRecipients(transmission: any, listName: any, headerTo: any) {
   if (!_.isArray(transmission[listName])) {
     return transmission.recipients;
   }
 
-  return transmission.recipients.concat(_.map(transmission[listName], (recipient) => {
+  return transmission.recipients.concat(_.map(transmission[listName], (recipient: any) => {
     recipient.address = addressToObject(recipient.address);
 
     recipient.address.header_to = headerTo;
@@ -132,18 +126,18 @@ function addListToRecipients(transmission, listName, headerTo) {
   }));
 }
 
-function generateCCHeader(transmission) {
-  return _.map(transmission.cc, (ccRecipient) => addressToString(ccRecipient.address)).join(', ');
+function generateCCHeader(transmission: any) {
+  return _.map(transmission.cc, (ccRecipient: any) => addressToString(ccRecipient.address)).join(', ');
 }
 
-function generateHeaderTo(recipients) {
+function generateHeaderTo(recipients: any) {
   // if a recipient has a header_to then it is cc'd or bcc'd and we don't want it in the header_to value
-  const originalRecipients = _.filter(recipients, (recipient) => !_.has(recipient.address, 'header_to'));
+  const originalRecipients = _.filter(recipients, (recipient: any) => !_.has(recipient.address, 'header_to'));
 
-  return _.map(originalRecipients, (recipient) => addressToString(recipient.address)).join(', ');
+  return _.map(originalRecipients, (recipient: any) => addressToString(recipient.address)).join(', ');
 }
 
-function addressToString(address) {
+function addressToString(address: any) {
   if (_.isPlainObject(address)) {
     if (_.has(address, 'name')) {
       address = `"${address.name}" <${address.email}>`;
@@ -155,7 +149,7 @@ function addressToString(address) {
   return address;
 }
 
-function addressToObject(address) {
+function addressToObject(address: any) {
   let addressObject = address;
 
   if (_.isString(address)) {
