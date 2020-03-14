@@ -1,4 +1,5 @@
 import { merge, isPlainObject } from "./deps.ts";
+import { SparkPostOptions } from "./mod.ts";
 import { resolveUri, createVersionStr, createSparkPostError } from "./util.ts";
 
 const version = "0.0.1";
@@ -10,7 +11,7 @@ const defaults = {
   debug: false
 };
 
-const handleOptions = function(apiKey: string, options: any) {
+const handleOptions = function(apiKey: string, options: SparkPostOptions) {
   if (typeof apiKey === "object") {
     options = apiKey;
     options.key = Deno.env("SPARKPOST_API_KEY");

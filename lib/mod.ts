@@ -28,7 +28,7 @@ export class SparkPost extends Client {
   transmissions: Transmissions;
   webhooks: Webhooks;
 
-  constructor(apiKey: string, options: any) {
+  constructor(apiKey: string, options: SparkPostOptions) {
     super(apiKey, options);
     this.inboundDomains = new InboundDomains(this);
     this.messageEvents = new MessageEvents(this);
@@ -42,6 +42,18 @@ export class SparkPost extends Client {
     this.transmissions = new Transmissions(this);
     this.webhooks = new Webhooks(this);
   }
+}
+
+export interface SparkPostOptions {
+  apiVersion?: string;
+  endpoint?: string;
+  origin?: string;
+  // An optional identifier to include in the User-Agent header. e.g. `product/1.0.0`
+  stackIdentity?: string;
+  // set headers that apply to all requests
+  headers?: { string: string };
+  debug?: boolean;
+  key?: string;
 }
 
 /**
