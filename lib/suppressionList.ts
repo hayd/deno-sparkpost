@@ -1,4 +1,4 @@
-import { Base, IClient } from "./client.ts";
+import { Base } from "./client.ts";
 
 const api = "suppression-list";
 

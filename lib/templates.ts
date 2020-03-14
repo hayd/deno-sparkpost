@@ -1,10 +1,7 @@
-import { Base, IClient } from "./client.ts";
+import { Base } from "./client.ts";
+import { cloneDeep } from "./deps.ts";
 
 const api = "templates";
-
-import {
-  default as cloneDeep
-} from "https://unpkg.com/lodash-es@4.17.15/cloneDeep.js";
 
 export class Templates extends Base {
   /**

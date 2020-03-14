@@ -1,6 +1,5 @@
-import * as _ from "https://unpkg.com/lodash-es@4.17.15/lodash.js";
+import { merge, isPlainObject } from "./deps.ts";
 import { resolveUri, createVersionStr, createSparkPostError } from "./util.ts";
-import stringSize from "https://unpkg.com/lodash-es@4.17.15/_stringSize.js";
 
 const version = "0.0.1";
 
@@ -63,7 +62,7 @@ export class Client implements IClient {
     this.version = version;
 
     // setting up default headers
-    this.defaultHeaders = _.merge({
+    this.defaultHeaders = merge({
       "User-Agent": createVersionStr(version, options),
       "Content-Type": "application/json"
     }, options.headers);
@@ -79,7 +78,7 @@ export class Client implements IClient {
     const baseUrl = `${this.origin}/api/${this.apiVersion}/`;
 
     // we need options
-    if (!_.isPlainObject(options)) {
+    if (!isPlainObject(options)) {
       throw new TypeError("options argument is required");
     }
 
@@ -87,7 +86,7 @@ export class Client implements IClient {
     options.uri = resolveUri(baseUrl, options.uri);
 
     // merge headers
-    options.headers = _.merge({}, this.defaultHeaders, options.headers);
+    options.headers = merge({}, this.defaultHeaders, options.headers);
 
     // add Authorization with API Key
     options.headers.Authorization = this.apiKey;

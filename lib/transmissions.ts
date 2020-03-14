@@ -1,4 +1,4 @@
-import { Base, IClient } from "./client.ts";
+import { Base } from "./client.ts";
 
 import * as _ from "https://unpkg.com/lodash-es@4.17.15/lodash.js";
 

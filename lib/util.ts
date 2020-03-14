@@ -1,4 +1,4 @@
-import { resolve } from "https://deno.land/std@v0.36.0/path/posix.ts";
+import { resolve } from "./deps.ts";
 
 export class SparkPostError extends Error {
   errors: any;

@@ -1,4 +1,3 @@
-import * as _ from "https://unpkg.com/lodash-es@4.17.15/lodash.js";
 import { Events } from "./events.ts";
 import { InboundDomains } from "./inboundDomains.ts";
 import { MessageEvents } from "./messageEvents.ts";
@@ -10,7 +9,7 @@ import { SuppressionList } from "./suppressionList.ts";
 import { Templates } from "./templates.ts";
 import { Transmissions } from "./transmissions.ts";
 import { Webhooks } from "./webhooks.ts";
-import { Client, IClient } from "./client.ts";
+import { Client } from "./client.ts";
 
 // const url = require('url');
 // const withCallback = require('./withCallback');
