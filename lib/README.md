@@ -132,3 +132,5 @@ TODO
 ### Testing
 
 TODO
+
+[sparkpost sign up]: https://app.sparkpost.com/join?plan=free-0817?src=Social%20Media&sfdcid=70160000000pqBb&pc=GitHubSignUp&utm_source=github&utm_medium=social-media&utm_campaign=github-deno&utm_content=sign-up
