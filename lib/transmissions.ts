@@ -1,6 +1,14 @@
 import { Base } from "./client.ts";
-
-import * as _ from "https://unpkg.com/lodash-es@4.17.15/lodash.js";
+import {
+  cloneDeep,
+  filter,
+  has,
+  isArray,
+  isString,
+  isPlainObject,
+  map,
+  set
+} from "./deps.ts";
 
 const api = "transmissions";
 
@@ -76,15 +84,15 @@ export class Transmissions extends Base {
 }
 
 function formatPayload(originalTransmission: any) {
-  const transmission = _.cloneDeep(originalTransmission);
+  const transmission = cloneDeep(originalTransmission);
 
   // don't format the payload if we are not given an array of recipients
-  if (!_.isArray(transmission.recipients)) {
+  if (!isArray(transmission.recipients)) {
     return transmission;
   }
 
   // format all the original recipients to be in the object format
-  transmission.recipients = _.map(
+  transmission.recipients = map(
     transmission.recipients,
     (recipient: any) => {
       recipient.address = addressToObject(recipient.address);
@@ -94,8 +102,8 @@ function formatPayload(originalTransmission: any) {
   );
 
   // add the CC headers
-  if (_.isArray(transmission.cc) && transmission.cc.length > 0) {
-    _.set(transmission, "content.headers.CC", generateCCHeader(transmission));
+  if (isArray(transmission.cc) && transmission.cc.length > 0) {
+    set(transmission, "content.headers.CC", generateCCHeader(transmission));
   }
 
   const headerTo = generateHeaderTo(transmission.recipients);
@@ -111,18 +119,18 @@ function formatPayload(originalTransmission: any) {
 
 // FIXME these shouldn't all be any
 function addListToRecipients(transmission: any, listName: any, headerTo: any) {
-  if (!_.isArray(transmission[listName])) {
+  if (!isArray(transmission[listName])) {
     return transmission.recipients;
   }
 
   return transmission.recipients.concat(
-    _.map(transmission[listName], (recipient: any) => {
+    map(transmission[listName], (recipient: any) => {
       recipient.address = addressToObject(recipient.address);
 
       recipient.address.header_to = headerTo;
 
       // remove name from address - name is only put in the header for cc and not at all for bcc
-      if (_.has(recipient.address, "name")) {
+      if (has(recipient.address, "name")) {
         delete recipient.address.name;
       }
 
@@ -132,7 +140,7 @@ function addListToRecipients(transmission: any, listName: any, headerTo: any) {
 }
 
 function generateCCHeader(transmission: any) {
-  return _.map(
+  return map(
     transmission.cc,
     (ccRecipient: any) => addressToString(ccRecipient.address)
   ).join(", ");
@@ -140,20 +148,20 @@ function generateCCHeader(transmission: any) {
 
 function generateHeaderTo(recipients: any) {
   // if a recipient has a header_to then it is cc'd or bcc'd and we don't want it in the header_to value
-  const originalRecipients = _.filter(
+  const originalRecipients = filter(
     recipients,
-    (recipient: any) => !_.has(recipient.address, "header_to")
+    (recipient: any) => !has(recipient.address, "header_to")
   );
 
-  return _.map(
+  return map(
     originalRecipients,
     (recipient: any) => addressToString(recipient.address)
   ).join(", ");
 }
 
 function addressToString(address: any) {
-  if (_.isPlainObject(address)) {
-    if (_.has(address, "name")) {
+  if (isPlainObject(address)) {
+    if (has(address, "name")) {
       address = `"${address.name}" <${address.email}>`;
     } else {
       address = address.email;
@@ -166,7 +174,7 @@ function addressToString(address: any) {
 function addressToObject(address: any) {
   let addressObject = address;
 
-  if (_.isString(address)) {
+  if (isString(address)) {
     addressObject = {};
 
     const matches = /"?(.[^"]*)?"?\s*<(.+)>/gi.exec(address);
