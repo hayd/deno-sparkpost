@@ -60,20 +60,20 @@ Before using this library, you must have:
 
 Passing in an API key
 ```ts
-import { SparkPost } from "./lib/sparkpost.ts";
+import { SparkPost } from "https://deno.land/x/sparkpost/mod.ts";
 const client = new SparkPost('YOUR_API_KEY');
 ```
 
 Using an API key stored in an environment variable
 ```ts
 //Create an env var as SPARKPOST_API_KEY
-import { SparkPost } from "./lib/sparkpost.ts";
+import { SparkPost } from "https://deno.land/x/sparkpost/mod.ts";
 const client = new SparkPost();
 ```
 
 Specifying non-default options
 ```ts
-import { SparkPost } from "./lib/sparkpost.ts";
+import { SparkPost } from "https://deno.land/x/sparkpost/mod.ts";
 const options = {
   endpoint: 'https://dev.sparkpost.com:443'
 };
@@ -104,7 +104,7 @@ relevant to the email being sent. The send method will return a promise that wil
 successful and if not information about the error that occurred. If a callback is passed, it will be executed.
 
 ```ts
-import { SparkPost } from "./lib/sparkpost.ts";
+import { SparkPost } from "https://deno.land/x/sparkpost/mod.ts";
 const client = new SparkPost('<YOUR API KEY>');
 
 // If you have a SparkPost EU account you will need to pass a different `origin` via the options parameter:
