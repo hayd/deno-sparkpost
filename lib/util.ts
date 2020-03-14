@@ -16,12 +16,11 @@ export const createSparkPostError = function(res: any, body: any) {
   return new SparkPostError(res.statusMessage, body.errors, res.statusCode);
 };
 
-
 export function resolveUri(origin: string, uri: string) {
   if (!/^http/.test(uri)) {
-    const url = new URL(origin)
+    const url = new URL(origin);
     const newPathname = resolve(url.pathname, uri);
-    url.pathname = newPathname
+    url.pathname = newPathname;
     return url.toString();
   }
   return uri;

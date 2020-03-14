@@ -2,7 +2,7 @@ import { Base, IClient } from "./client.ts";
 
 import * as _ from "https://unpkg.com/lodash-es@4.17.15/lodash.js";
 
-const api = 'transmissions';
+const api = "transmissions";
 
 /*
  * "Class" declaration, Transmissions exposes three functions, one for sending a transmission,
@@ -18,8 +18,8 @@ export class Transmissions extends Base {
    */
   async list(options: any) {
     // Handle optional options argument
-    if (typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
     const reqOpts = {
@@ -36,8 +36,8 @@ export class Transmissions extends Base {
    * @returns {Promise}
    */
   async get(id: string) {
-    if (typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
     const options = {
@@ -55,12 +55,12 @@ export class Transmissions extends Base {
    */
   async send(transmission: any, options: any) {
     // Handle optional options argument
-    if (typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
-    if (!transmission || typeof transmission !== 'object') {
-      return this.client.reject(new Error('transmission object is required'));
+    if (!transmission || typeof transmission !== "object") {
+      return this.client.reject(new Error("transmission object is required"));
     }
 
     transmission = formatPayload(transmission);
@@ -73,7 +73,7 @@ export class Transmissions extends Base {
 
     return await this.client.post(reqOpts);
   }
-};
+}
 
 function formatPayload(originalTransmission: any) {
   const transmission = _.cloneDeep(originalTransmission);
@@ -84,21 +84,24 @@ function formatPayload(originalTransmission: any) {
   }
 
   // format all the original recipients to be in the object format
-  transmission.recipients = _.map(transmission.recipients, (recipient: any) => {
-    recipient.address = addressToObject(recipient.address);
+  transmission.recipients = _.map(
+    transmission.recipients,
+    (recipient: any) => {
+      recipient.address = addressToObject(recipient.address);
 
-    return recipient;
-  });
+      return recipient;
+    }
+  );
 
   // add the CC headers
   if (_.isArray(transmission.cc) && transmission.cc.length > 0) {
-    _.set(transmission, 'content.headers.CC', generateCCHeader(transmission));
+    _.set(transmission, "content.headers.CC", generateCCHeader(transmission));
   }
 
   const headerTo = generateHeaderTo(transmission.recipients);
 
-  transmission.recipients = addListToRecipients(transmission, 'cc', headerTo);
-  transmission.recipients = addListToRecipients(transmission, 'bcc', headerTo);
+  transmission.recipients = addListToRecipients(transmission, "cc", headerTo);
+  transmission.recipients = addListToRecipients(transmission, "bcc", headerTo);
 
   delete transmission.cc;
   delete transmission.bcc;
@@ -112,34 +115,45 @@ function addListToRecipients(transmission: any, listName: any, headerTo: any) {
     return transmission.recipients;
   }
 
-  return transmission.recipients.concat(_.map(transmission[listName], (recipient: any) => {
-    recipient.address = addressToObject(recipient.address);
+  return transmission.recipients.concat(
+    _.map(transmission[listName], (recipient: any) => {
+      recipient.address = addressToObject(recipient.address);
 
-    recipient.address.header_to = headerTo;
+      recipient.address.header_to = headerTo;
 
-    // remove name from address - name is only put in the header for cc and not at all for bcc
-    if (_.has(recipient.address, 'name')) {
-      delete recipient.address.name;
-    }
+      // remove name from address - name is only put in the header for cc and not at all for bcc
+      if (_.has(recipient.address, "name")) {
+        delete recipient.address.name;
+      }
 
-    return recipient;
-  }));
+      return recipient;
+    })
+  );
 }
 
 function generateCCHeader(transmission: any) {
-  return _.map(transmission.cc, (ccRecipient: any) => addressToString(ccRecipient.address)).join(', ');
+  return _.map(
+    transmission.cc,
+    (ccRecipient: any) => addressToString(ccRecipient.address)
+  ).join(", ");
 }
 
 function generateHeaderTo(recipients: any) {
   // if a recipient has a header_to then it is cc'd or bcc'd and we don't want it in the header_to value
-  const originalRecipients = _.filter(recipients, (recipient: any) => !_.has(recipient.address, 'header_to'));
+  const originalRecipients = _.filter(
+    recipients,
+    (recipient: any) => !_.has(recipient.address, "header_to")
+  );
 
-  return _.map(originalRecipients, (recipient: any) => addressToString(recipient.address)).join(', ');
+  return _.map(
+    originalRecipients,
+    (recipient: any) => addressToString(recipient.address)
+  ).join(", ");
 }
 
 function addressToString(address: any) {
   if (_.isPlainObject(address)) {
-    if (_.has(address, 'name')) {
+    if (_.has(address, "name")) {
       address = `"${address.name}" <${address.email}>`;
     } else {
       address = address.email;

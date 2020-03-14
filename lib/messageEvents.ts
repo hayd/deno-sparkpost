@@ -1,6 +1,6 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'message-events';
+const api = "message-events";
 
 /*
  * "Class" declaration, Message Events API exposes one function:
@@ -15,17 +15,17 @@ export class MessageEvents extends Base {
    */
   async search(parameters: any) {
     const options = {
-      uri: api
-      , qs: {}
+      uri: api,
+      qs: {}
     };
-    const qs: any = options.qs;  // force to any type
+    const qs: any = options.qs; // force to any type
     Object.keys(parameters).forEach(function(paramname: string) {
       if (Array.isArray(parameters[paramname])) {
-        qs[paramname] = parameters[paramname].join(',');
+        qs[paramname] = parameters[paramname].join(",");
       } else {
         qs[paramname] = parameters[paramname];
       }
     });
     return await this.client.get(options);
   }
-};
+}

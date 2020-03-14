@@ -1,6 +1,6 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'relay-webhooks';
+const api = "relay-webhooks";
 
 export class RelayWebhooks extends Base {
   /**
@@ -21,8 +21,8 @@ export class RelayWebhooks extends Base {
    * @returns {Promise}
    */
   async get(id: string) {
-    if (!id || typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (!id || typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
     const options = {
@@ -38,13 +38,13 @@ export class RelayWebhooks extends Base {
    * @returns {Promise}
    */
   async create(webhook: any) {
-    if (!webhook || typeof webhook !== 'object') {
-      return this.client.reject(new Error('webhook object is required'));
+    if (!webhook || typeof webhook !== "object") {
+      return this.client.reject(new Error("webhook object is required"));
     }
 
     const reqOpts = {
-      uri: api
-      , json: webhook
+      uri: api,
+      json: webhook
     };
 
     return await this.client.post(reqOpts);
@@ -57,17 +57,17 @@ export class RelayWebhooks extends Base {
    * @returns {Promise}
    */
   async update(id: string, webhook: any) {
-    if (!id || typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (!id || typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
-    if (!webhook || typeof webhook !== 'object') {
-      return this.client.reject(new Error('webhook object is required'));
+    if (!webhook || typeof webhook !== "object") {
+      return this.client.reject(new Error("webhook object is required"));
     }
 
     const reqOpts = {
-      uri: `${api}/${id}`
-      , json: webhook
+      uri: `${api}/${id}`,
+      json: webhook
     };
 
     return await this.client.put(reqOpts);
@@ -79,8 +79,8 @@ export class RelayWebhooks extends Base {
    * @returns {Promise}
    */
   async delete(id: string) {
-    if (!id || typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (!id || typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
     const options = {
@@ -89,4 +89,4 @@ export class RelayWebhooks extends Base {
 
     return await this.client.delete(options);
   }
-};
+}

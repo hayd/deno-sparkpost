@@ -1,6 +1,6 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'subaccounts';
+const api = "subaccounts";
 
 export class Subaccounts extends Base {
   /**
@@ -21,8 +21,8 @@ export class Subaccounts extends Base {
    * @returns {Promise}
    */
   async get(id: string) {
-    if (!id || typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (!id || typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
     const options = {
@@ -38,8 +38,8 @@ export class Subaccounts extends Base {
    * @returns {Promise}
    */
   async create(subaccount: any) {
-    if (!subaccount || typeof subaccount !== 'object') {
-      return this.client.reject(new Error('subaccount object is required'));
+    if (!subaccount || typeof subaccount !== "object") {
+      return this.client.reject(new Error("subaccount object is required"));
     }
 
     const reqOpts = {
@@ -56,12 +56,12 @@ export class Subaccounts extends Base {
    * @returns {Promise}
    */
   async update(id: string, subaccount: any) {
-    if (!id || typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (!id || typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
-    if (!subaccount || typeof subaccount !== 'object') {
-      return this.client.reject(new Error('subaccount object is required'));
+    if (!subaccount || typeof subaccount !== "object") {
+      return this.client.reject(new Error("subaccount object is required"));
     }
 
     const reqOpts = {
@@ -71,4 +71,4 @@ export class Subaccounts extends Base {
 
     return await this.client.put(reqOpts);
   }
-};
+}

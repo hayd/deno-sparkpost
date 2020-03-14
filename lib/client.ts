@@ -6,13 +6,13 @@ const version = "0.0.1";
 
 //REST API Config Defaults
 const defaults = {
-  origin: 'https://api.sparkpost.com:443',
-  apiVersion: 'v1',
+  origin: "https://api.sparkpost.com:443",
+  apiVersion: "v1",
   debug: false
 };
 
 const handleOptions = function(apiKey: string, options: any) {
-  if (typeof apiKey === 'object') {
+  if (typeof apiKey === "object") {
     options = apiKey;
     options.key = Deno.env("SPARKPOST_API_KEY");
   } else {
@@ -28,9 +28,9 @@ const handleOptions = function(apiKey: string, options: any) {
 export interface IClient {
   // FIX these signatures
   delete: (options: any) => Promise<any>;
-  get: (options: any, ) => Promise<any>;
+  get: (options: any) => Promise<any>;
   post: (options: any) => Promise<any>;
-  put: (options: any, ) => Promise<any>;
+  put: (options: any) => Promise<any>;
   reject: (err: any) => void;
 }
 
@@ -54,8 +54,8 @@ export class Client implements IClient {
 
     const apiKey_ = options_.key || Deno.env("SPARKPOST_API_KEY");
 
-    if (typeof apiKey_ === 'undefined') {
-      throw new Error('Client requires an API Key.');
+    if (typeof apiKey_ === "undefined") {
+      throw new Error("Client requires an API Key.");
     }
     this.apiKey = apiKey_;
 
@@ -64,22 +64,23 @@ export class Client implements IClient {
 
     // setting up default headers
     this.defaultHeaders = _.merge({
-      'User-Agent': createVersionStr(version, options)
-      , 'Content-Type': 'application/json'
+      "User-Agent": createVersionStr(version, options),
+      "Content-Type": "application/json"
     }, options.headers);
 
     //Optional client config
     this.origin = options.origin;
     this.apiVersion = options.apiVersion || defaults.apiVersion;
-    this.debug = (typeof options.debug === 'boolean') ? options.debug : defaults.debug;
-
+    this.debug = (typeof options.debug === "boolean")
+      ? options.debug
+      : defaults.debug;
   }
   async request(options: any) {
     const baseUrl = `${this.origin}/api/${this.apiVersion}/`;
 
     // we need options
     if (!_.isPlainObject(options)) {
-      throw new TypeError('options argument is required');
+      throw new TypeError("options argument is required");
     }
 
     // if we don't have a fully qualified URL let's make one
@@ -95,16 +96,18 @@ export class Client implements IClient {
     options.strictSSL = true;
 
     // default to accepting gzipped responses
-    if (typeof options.gzip === 'undefined') {
+    if (typeof options.gzip === "undefined") {
       options.gzip = true;
     }
 
     // set debug
-    options.debug = (typeof options.debug === 'boolean') ? options.debug : this.debug;
+    options.debug = (typeof options.debug === "boolean")
+      ? options.debug
+      : this.debug;
 
     let url = options.uri;
     // FIXME does headers need to be a Headers ?
-    const init: any = { method: options.method, headers: options.headers }
+    const init: any = { method: options.method, headers: options.headers };
     if (options.json) {
       init.body = JSON.stringify(options.json);
       // Content-Type', 'text/json' ?
@@ -112,14 +115,13 @@ export class Client implements IClient {
     if (options.qs) {
       const u = new URL(url);
       // @ts-ignore
-      Object.entries(options.qs).forEach((item) => { 
-       // @ts-ignore
-       u.searchParams.append(...item);
-       url = u.toString()
+      Object.entries(options.qs).forEach((item) => {
+        // @ts-ignore
+        u.searchParams.append(...item);
+        url = u.toString();
       });
-
     }
-    const res = await fetch(url, init)
+    const res = await fetch(url, init);
 
     const invalidCodeRegex = /(5|4)[0-9]{2}/;
 
@@ -127,30 +129,30 @@ export class Client implements IClient {
       throw createSparkPostError(res, res.body);
     }
     // if (options.debug) { response.debug = res; }
-    return await res.body.json()
-  };
+    return await res.body.json();
+  }
 
   async get(options: any) {
-    options.method = 'GET';
+    options.method = "GET";
     options.json = true;
 
     return this.request(options);
-  };
+  }
 
   async post(options: any) {
-    options.method = 'POST';
+    options.method = "POST";
 
     return this.request(options);
-  };
+  }
 
   async put(options: any) {
-    options.method = 'PUT';
+    options.method = "PUT";
 
     return this.request(options);
-  };
+  }
 
   async delete(options: any) {
-    options.method = 'DELETE';
+    options.method = "DELETE";
 
     return this.request(options);
   }
@@ -158,6 +160,5 @@ export class Client implements IClient {
   reject(error: any) {
     // withCallback?
     throw error;
-  };
-
+  }
 }

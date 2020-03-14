@@ -1,8 +1,10 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'templates';
+const api = "templates";
 
-import { default as cloneDeep } from "https://unpkg.com/lodash-es@4.17.15/cloneDeep.js";
+import {
+  default as cloneDeep
+} from "https://unpkg.com/lodash-es@4.17.15/cloneDeep.js";
 
 export class Templates extends Base {
   /**
@@ -26,17 +28,17 @@ export class Templates extends Base {
   async get(id: string, options: any) {
     options = options || {};
 
-    if (typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
     if (!id) {
-      return this.client.reject(new Error('template id is required'));
+      return this.client.reject(new Error("template id is required"));
     }
 
     const reqOpts = {
-      uri: `${api}/${id}`
-      , qs: options
+      uri: `${api}/${id}`,
+      qs: options
     };
 
     return await this.client.get(reqOpts);
@@ -48,13 +50,13 @@ export class Templates extends Base {
    * @returns {Promise}
    */
   async create(template: any) {
-    if (!template || typeof template !== 'object') {
-      return this.client.reject(new Error('template object is required'));
+    if (!template || typeof template !== "object") {
+      return this.client.reject(new Error("template object is required"));
     }
 
     const reqOpts = {
-      uri: api
-      , json: template
+      uri: api,
+      json: template
     };
 
     return await this.client.post(reqOpts);
@@ -69,22 +71,22 @@ export class Templates extends Base {
    */
   async update(id: string, template: any, options: any) {
     // Handle optional options argument
-    if (typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
     if (!id) {
-      return this.client.reject(new Error('template id is required'));
+      return this.client.reject(new Error("template id is required"));
     }
 
-    if (!template || typeof template !== 'object') {
-      return this.client.reject(new Error('template object is required'));
+    if (!template || typeof template !== "object") {
+      return this.client.reject(new Error("template object is required"));
     }
 
     const reqOpts = {
-      uri: `${api}/${id}`
-      , json: template
-      , qs: options
+      uri: `${api}/${id}`,
+      json: template,
+      qs: options
     };
 
     return await this.client.put(reqOpts);
@@ -96,8 +98,8 @@ export class Templates extends Base {
    * @returns {Promise}
    */
   async delete(id: string) {
-    if (!id || typeof id !== 'string') {
-      return this.client.reject(new Error('template id is required'));
+    if (!id || typeof id !== "string") {
+      return this.client.reject(new Error("template id is required"));
     }
 
     const options = {
@@ -116,27 +118,27 @@ export class Templates extends Base {
     options = options || {};
 
     // Handle optional options argument
-    if (typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
     if (!id) {
-      return this.client.reject(new Error('template id is required'));
+      return this.client.reject(new Error("template id is required"));
     }
 
     const reqOpts = {
-      uri: `${api}/${id}/preview`
-      , json: cloneDeep(options)
-      , qs: {}
+      uri: `${api}/${id}/preview`,
+      json: cloneDeep(options),
+      qs: {}
     };
-    const qs: any = reqOpts.qs // force any type
+    const qs: any = reqOpts.qs; // force any type
 
     // Add draft to query params
-    if (reqOpts.json.hasOwnProperty('draft')) {
+    if (reqOpts.json.hasOwnProperty("draft")) {
       qs.draft = reqOpts.json.draft;
       delete reqOpts.json.draft;
     }
 
     return await this.client.post(reqOpts);
   }
-};
+}

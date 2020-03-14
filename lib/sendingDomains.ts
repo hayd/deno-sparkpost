@@ -1,6 +1,6 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'sending-domains';
+const api = "sending-domains";
 
 export class SendingDomains extends Base {
   /**
@@ -23,8 +23,8 @@ export class SendingDomains extends Base {
    * @return {Promise}
    */
   async get(domain: string) {
-    if (!domain || typeof domain === 'function') {
-      return this.client.reject(new Error('domain is required'));
+    if (!domain || typeof domain === "function") {
+      return this.client.reject(new Error("domain is required"));
     }
 
     const options = {
@@ -41,8 +41,8 @@ export class SendingDomains extends Base {
    * @return {Promise}
    */
   async create(createOpts: any) {
-    if (!createOpts || typeof createOpts !== 'object') {
-      return this.client.reject(new Error('create options are required'));
+    if (!createOpts || typeof createOpts !== "object") {
+      return this.client.reject(new Error("create options are required"));
     }
 
     const options = {
@@ -61,12 +61,12 @@ export class SendingDomains extends Base {
    * @return {Promise}
    */
   async update(domain: string, updateOpts: any) {
-    if (typeof domain !== 'string') {
-      return this.client.reject(new Error('domain is required'));
+    if (typeof domain !== "string") {
+      return this.client.reject(new Error("domain is required"));
     }
 
-    if (!updateOpts || typeof updateOpts !== 'object') {
-      return this.client.reject(new Error('update options are required'));
+    if (!updateOpts || typeof updateOpts !== "object") {
+      return this.client.reject(new Error("update options are required"));
     }
 
     const options = {
@@ -84,8 +84,8 @@ export class SendingDomains extends Base {
    * @return {Promise}
    */
   async delete(domain: string) {
-    if (typeof domain !== 'string') {
-      return this.client.reject(new Error('domain is required'));
+    if (typeof domain !== "string") {
+      return this.client.reject(new Error("domain is required"));
     }
 
     const options = {
@@ -103,12 +103,14 @@ export class SendingDomains extends Base {
    * @return {Promise}
    */
   async verify(domain: string, options: any) {
-    if (typeof domain !== 'string') {
-      return this.client.reject(new Error('domain is required'));
+    if (typeof domain !== "string") {
+      return this.client.reject(new Error("domain is required"));
     }
 
-    if (!options || typeof options !== 'object') {
-      return this.client.reject(new Error('verification options are required'));
+    if (!options || typeof options !== "object") {
+      return this.client.reject(
+        new Error("verification options are required")
+      );
     }
 
     const reqOpts = {
@@ -118,4 +120,4 @@ export class SendingDomains extends Base {
 
     return await this.client.post(reqOpts);
   }
-};
+}

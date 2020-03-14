@@ -30,7 +30,6 @@ export class SparkPost extends Client {
   webhooks: Webhooks;
 
   constructor(apiKey: string, options: any) {
-
     super(apiKey, options);
     this.inboundDomains = new InboundDomains(this);
     this.messageEvents = new MessageEvents(this);
@@ -43,9 +42,7 @@ export class SparkPost extends Client {
     this.templates = new Templates(this);
     this.transmissions = new Transmissions(this);
     this.webhooks = new Webhooks(this);
-
-  };
-
+  }
 }
 
 /**

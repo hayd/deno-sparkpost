@@ -1,6 +1,6 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'suppression-list';
+const api = "suppression-list";
 
 export class SuppressionList extends Base {
   /**
@@ -12,8 +12,8 @@ export class SuppressionList extends Base {
    */
   async list(parameters: any) {
     const options = {
-      uri: api
-      , qs: parameters
+      uri: api,
+      qs: parameters
     };
     return await this.client.get(options);
   }
@@ -25,8 +25,8 @@ export class SuppressionList extends Base {
    * @return {Promise}
    */
   async get(email: string) {
-    if (!email || typeof email === 'function') {
-      return this.client.reject(new Error('email is required'));
+    if (!email || typeof email === "function") {
+      return this.client.reject(new Error("email is required"));
     }
 
     const options = {
@@ -43,8 +43,8 @@ export class SuppressionList extends Base {
    * @return {Promise}
    */
   async upsert(listEntries: any) {
-    if (!listEntries || typeof listEntries === 'function') {
-      return this.client.reject(new Error('list entries is required'));
+    if (!listEntries || typeof listEntries === "function") {
+      return this.client.reject(new Error("list entries is required"));
     }
 
     if (!Array.isArray(listEntries)) {
@@ -66,8 +66,8 @@ export class SuppressionList extends Base {
    * @return {Promise}
    */
   async delete(email: string) {
-    if (!email || typeof email === 'function') {
-      return this.client.reject(new Error('email is required'));
+    if (!email || typeof email === "function") {
+      return this.client.reject(new Error("email is required"));
     }
 
     const options = {
@@ -75,4 +75,4 @@ export class SuppressionList extends Base {
     };
     return await this.client.delete(options);
   }
-};
+}

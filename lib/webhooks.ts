@@ -1,6 +1,6 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'webhooks';
+const api = "webhooks";
 
 export class Webhooks extends Base {
   /**
@@ -17,8 +17,8 @@ export class Webhooks extends Base {
     };
     const qs: any = reqOpts.qs;
 
-    if (!options || typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (!options || typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
     if (options.timezone) {
@@ -37,12 +37,12 @@ export class Webhooks extends Base {
    * @returns {Promise}
    */
   async get(id: string, options: any) {
-    if (!options || typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (!options || typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
-    if (typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
     const reqOpts = {
@@ -66,8 +66,8 @@ export class Webhooks extends Base {
    * @returns {Promise}
    */
   async create(webhook: any) {
-    if (!webhook || typeof webhook === 'function') {
-      return this.client.reject(new Error('webhook object is required'));
+    if (!webhook || typeof webhook === "function") {
+      return this.client.reject(new Error("webhook object is required"));
     }
 
     const options = {
@@ -88,11 +88,11 @@ export class Webhooks extends Base {
    */
   async update(id: string, webhook: any) {
     if (!id) {
-      return this.client.reject(new Error('id is required'));
+      return this.client.reject(new Error("id is required"));
     }
 
-    if (!webhook || typeof webhook === 'function') {
-      return this.client.reject(new Error('webhook object is required'));
+    if (!webhook || typeof webhook === "function") {
+      return this.client.reject(new Error("webhook object is required"));
     }
 
     const options = {
@@ -112,8 +112,8 @@ export class Webhooks extends Base {
    * @returns {Promise}
    */
   async delete(id: string) {
-    if (!id || typeof id === 'function') {
-      return this.client.reject(new Error('id is required'));
+    if (!id || typeof id === "function") {
+      return this.client.reject(new Error("id is required"));
     }
 
     const options = {
@@ -132,12 +132,12 @@ export class Webhooks extends Base {
    * @returns {Promise}
    */
   async validate(id: string, options: any) {
-    if (typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
-    if (!options || typeof options === 'function' || !options.message) {
-      return this.client.reject(new Error('message is required'));
+    if (!options || typeof options === "function" || !options.message) {
+      return this.client.reject(new Error("message is required"));
     }
 
     const reqOpts = {
@@ -159,12 +159,12 @@ export class Webhooks extends Base {
    * @returns {Promise}
    */
   async getBatchStatus(id: string, options: any) {
-    if (!options || typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (!options || typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
-    if (typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
     const reqOpts = {
@@ -206,8 +206,8 @@ export class Webhooks extends Base {
     };
     const qs: any = reqOpts.qs;
 
-    if (!options || typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (!options || typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
     if (options.events) {
@@ -216,4 +216,4 @@ export class Webhooks extends Base {
 
     return await this.client.get(reqOpts);
   }
-};
+}

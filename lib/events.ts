@@ -1,12 +1,12 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'events';
+const api = "events";
 
 /*
  * "Class" declaration, Events API exposes one function:
  * - search: retrieves list of message events according to given params
  */
-export class Events extends Base {  
+export class Events extends Base {
   /**
    * Search for events using given parameters
    *
@@ -15,13 +15,13 @@ export class Events extends Base {
    */
   async searchMessage(parameters: any) {
     const options: any = {
-      uri: `${api}/message`
-      , qs: {}
+      uri: `${api}/message`,
+      qs: {}
     };
 
     Object.keys(parameters).forEach(function(paramname) {
       if (Array.isArray(parameters[paramname])) {
-        options.qs[paramname] = parameters[paramname].join(',');
+        options.qs[paramname] = parameters[paramname].join(",");
       } else {
         options.qs[paramname] = parameters[paramname];
       }

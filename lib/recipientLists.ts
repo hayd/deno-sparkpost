@@ -1,6 +1,6 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'recipient-lists';
+const api = "recipient-lists";
 
 export class RecipientLists extends Base {
   /**
@@ -28,12 +28,12 @@ export class RecipientLists extends Base {
     options = options || {};
 
     // Handle optional options argument
-    if (typeof options === 'function') {
-      return this.client.reject(new Error('options cannot be a callback'));
+    if (typeof options === "function") {
+      return this.client.reject(new Error("options cannot be a callback"));
     }
 
     if (!id) {
-      return this.client.reject(new Error('id is required'));
+      return this.client.reject(new Error("id is required"));
     }
 
     const reqOpts = {
@@ -44,7 +44,6 @@ export class RecipientLists extends Base {
     return await this.client.get(reqOpts);
   }
 
-
   /**
    * Create a new recipient list
    * https://developers.sparkpost.com/api/recipient-lists#recipient-lists-create-post
@@ -54,8 +53,11 @@ export class RecipientLists extends Base {
    * @return {Promise}
    */
   async create(recipientList: any) {
-    if (!recipientList || typeof recipientList !== 'object' || !recipientList.recipients) {
-      return this.client.reject(new Error('recipient list is required'));
+    if (
+      !recipientList || typeof recipientList !== "object" ||
+      !recipientList.recipients
+    ) {
+      return this.client.reject(new Error("recipient list is required"));
     }
 
     const reqOpts = {
@@ -81,11 +83,11 @@ export class RecipientLists extends Base {
    */
   async update(id: string, recipientList: any) {
     if (!id) {
-      return this.client.reject(new Error('recipient list id is required'));
+      return this.client.reject(new Error("recipient list id is required"));
     }
 
-    if (!recipientList || typeof recipientList === 'function') {
-      return this.client.reject(new Error('recipient list is required'));
+    if (!recipientList || typeof recipientList === "function") {
+      return this.client.reject(new Error("recipient list is required"));
     }
 
     const reqOpts = {
@@ -109,8 +111,8 @@ export class RecipientLists extends Base {
    *
    */
   async delete(id: string) {
-    if (!id || typeof id !== 'string') {
-      return this.client.reject(new Error('id is required'));
+    if (!id || typeof id !== "string") {
+      return this.client.reject(new Error("id is required"));
     }
 
     const reqOpts = {
@@ -119,4 +121,4 @@ export class RecipientLists extends Base {
 
     return await this.client.delete(reqOpts);
   }
-};
+}

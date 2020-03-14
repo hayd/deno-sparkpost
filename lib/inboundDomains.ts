@@ -1,9 +1,8 @@
 import { Base, IClient } from "./client.ts";
 
-const api = 'inbound-domains';
+const api = "inbound-domains";
 
 export class InboundDomains extends Base {
-
   /**
    * List an overview of all inbound domains in the account.
    *
@@ -22,8 +21,8 @@ export class InboundDomains extends Base {
    * @returns {Promise}
    */
   async get(domain: string) {
-    if (!domain || typeof domain !== 'string') {
-      return this.client.reject(new Error('domain is required'));
+    if (!domain || typeof domain !== "string") {
+      return this.client.reject(new Error("domain is required"));
     }
 
     const options: any = {
@@ -38,13 +37,13 @@ export class InboundDomains extends Base {
    * @returns {Promise}
    */
   async create(createOpts: any) {
-    if (!createOpts || typeof createOpts !== 'object') {
-      return this.client.reject(new Error('create options are required'));
+    if (!createOpts || typeof createOpts !== "object") {
+      return this.client.reject(new Error("create options are required"));
     }
 
     const options = {
-      uri: api
-      , json: createOpts
+      uri: api,
+      json: createOpts
     };
     return await this.client.post(options);
   }
@@ -55,8 +54,8 @@ export class InboundDomains extends Base {
    * @returns {Promise}
    */
   async delete(domain: string) {
-    if (!domain || typeof domain !== 'string') {
-      return this.client.reject(new Error('domain is required'));
+    if (!domain || typeof domain !== "string") {
+      return this.client.reject(new Error("domain is required"));
     }
 
     const options = {
@@ -64,4 +63,4 @@ export class InboundDomains extends Base {
     };
     return await this.client.delete(options);
   }
-};
+}
