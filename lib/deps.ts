@@ -1,4 +1,4 @@
-export { resolve } from "https://deno.land/std@v0.36.0/path/posix.ts";
+export { resolve } from "https://deno.land/std@v0.42.0/path/posix.ts";
 
 // Do we really need so much lodash??
 export {

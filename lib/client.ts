@@ -14,7 +14,7 @@ const defaults = {
 const handleOptions = function(apiKey: string, options: SparkPostOptions) {
   if (typeof apiKey === "object") {
     options = apiKey;
-    options.key = Deno.env("SPARKPOST_API_KEY");
+    options.key = Deno.env.get("SPARKPOST_API_KEY");
   } else {
     options = options || {};
     options.key = apiKey;
@@ -52,7 +52,7 @@ export class Client implements IClient {
   constructor(apiKey: string, options: any) {
     const options_: any = handleOptions(apiKey, options);
 
-    const apiKey_ = options_.key || Deno.env("SPARKPOST_API_KEY");
+    const apiKey_ = options_.key || Deno.env.get("SPARKPOST_API_KEY");
 
     if (typeof apiKey_ === "undefined") {
       throw new Error("Client requires an API Key.");
@@ -129,7 +129,7 @@ export class Client implements IClient {
       throw createSparkPostError(res, res.body);
     }
     // if (options.debug) { response.debug = res; }
-    return await res.body.json();
+    return await res.json();
   }
 
   async get(options: any) {
